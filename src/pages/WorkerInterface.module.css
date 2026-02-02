@@ -1,0 +1,736 @@
+/* Worker Interface – tablet-first, touch-friendly */
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  background: #2d3d2d;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.settingsBtn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.settingsBtn:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.settingsIcon {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex-shrink: 0;
+  color: #0f172a;
+}
+
+.backArrow {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  margin-inline-end: 0.35rem;
+  vertical-align: -0.2em;
+  color: inherit;
+}
+
+.screen {
+  width: 100%;
+  max-width: 720px;
+  min-width: 0;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+}
+
+/* Small phones: single column, tighter padding */
+@media (max-width: 480px) {
+  .page {
+    padding: 0.75rem;
+  }
+  .screen {
+    padding: 1.25rem;
+    border-radius: 20px;
+  }
+  .screenTitle {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .deptGrid,
+  .taskGrid,
+  .zoneGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet (768px–1024px): primary device – optimized layout */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .page {
+    padding: 2rem;
+  }
+  .screen {
+    padding: 2rem;
+    max-width: 700px;
+    border-radius: 24px;
+  }
+  .screenTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .deptGrid,
+  .taskGrid,
+  .zoneGrid {
+    gap: 1.25rem;
+  }
+  .deptCard,
+  .taskCard,
+  .zoneCard {
+    min-height: 88px;
+  }
+}
+
+/* Desktop: comfortable width and spacing */
+@media (min-width: 1025px) {
+  .page {
+    padding: 2rem;
+  }
+  .screen {
+    padding: 2.25rem;
+    max-width: 720px;
+  }
+  .screenTitle {
+    font-size: 1.6rem;
+  }
+}
+
+.stepBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 6px;
+  background: #334433;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.stepIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-inline-end: 0.5rem;
+  vertical-align: -0.15em;
+  color: inherit;
+}
+
+.stepBadgeSvg {
+  width: 1rem;
+  height: 1rem;
+  color: #fff;
+}
+
+.confirmIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-inline-end: 0.5rem;
+  vertical-align: -0.25em;
+  color: #0f172a;
+}
+
+[dir='rtl'] .stepBadge {
+  right: auto;
+  left: 1rem;
+}
+
+.backButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334433;
+  background: #f0f0f0;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[dir='rtl'] .backButton {
+  left: auto;
+  right: 1rem;
+}
+
+.backButton:hover {
+  background: #e5e5e5;
+}
+
+.screenTitle {
+  margin: 0 0 1.25rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #222;
+  text-align: center;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+/* Department selection – tablet-first 2-col grid, touch targets */
+.deptGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .deptGrid {
+    gap: 1.25rem;
+  }
+}
+
+.deptCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 80px;
+  padding: 1.25rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #d4d4d4;
+  background: #fff;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .deptCard {
+    min-height: 84px;
+    padding: 1.25rem 1rem;
+    font-size: 1.05rem;
+  }
+}
+
+.deptCard:hover {
+  border-color: #5c7b5c;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.deptCard:active {
+  background: #f8f8f8;
+}
+
+.deptIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  color: #0f172a;
+}
+
+.deptLabel {
+  text-align: center;
+  line-height: 1.3;
+}
+
+[dir='rtl'] .deptLabel {
+  direction: rtl;
+}
+
+/* Task selection – tablet-friendly cards */
+.taskGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .taskGrid {
+    gap: 1.25rem;
+  }
+}
+
+.taskCard {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 1rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[dir='rtl'] .taskCard {
+  text-align: right;
+}
+
+@media (min-width: 768px) {
+  .taskCard {
+    min-height: 56px;
+    font-size: 1.05rem;
+  }
+}
+
+.taskCard:hover {
+  border-color: #5c7b5c;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.taskCard:active {
+  background: #f8f8f8;
+}
+
+.taskIcon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  color: #0f172a;
+}
+
+.taskLabel {
+  display: block;
+  line-height: 1.3;
+}
+
+[dir='rtl'] .taskLabel {
+  direction: rtl;
+}
+
+/* Zone selection – same card style as Task (rectangular, 2x2 + 1) */
+.zoneGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.zoneGrid button:nth-child(5) {
+  grid-column: 1 / -1;
+}
+
+.zoneCard {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 1rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[dir='rtl'] .zoneCard {
+  text-align: right;
+}
+
+@media (min-width: 768px) {
+  .zoneCard {
+    min-height: 56px;
+    font-size: 1.05rem;
+  }
+}
+
+.zoneCard:hover {
+  border-color: #5c7b5c;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.zoneCard:active {
+  background: #f8f8f8;
+}
+
+.zoneIcon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  color: #0f172a;
+}
+
+.zoneLabel {
+  display: block;
+  line-height: 1.3;
+}
+
+[dir='rtl'] .zoneLabel {
+  direction: rtl;
+}
+
+/* Lines – same structure as execution card (1–20, From / To + Start) */
+.linesCard {
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+  background: #f8f8f8;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+.linesForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.linesHint {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  text-align: center;
+}
+
+.linesRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.linesRow .linesField {
+  flex: 1;
+  min-width: 100px;
+}
+
+.linesDash {
+  flex: 0 0 auto;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #64748b;
+  padding-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.linesField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.linesLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.linesInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #222;
+  background: #fff;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+.linesInput::placeholder {
+  color: #888;
+}
+
+.linesInput:focus {
+  outline: none;
+  border-color: #5c7b5c;
+  box-shadow: 0 0 0 2px rgba(92, 123, 92, 0.2);
+}
+
+.linesInput::-webkit-outer-spin-button,
+.linesInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.linesInput[type='number'] {
+  -moz-appearance: textfield;
+}
+
+[dir='rtl'] .linesInput {
+  text-align: right;
+}
+
+.linesForm .primaryButton {
+  align-self: center;
+  min-width: 160px;
+}
+
+/* Execution screen */
+.executionCard {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: #f0fdf4;
+  border-radius: 14px;
+  border: 1px solid #bbf7d0;
+}
+
+.executionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  border-bottom: 1px solid #dcfce7;
+}
+
+.executionRow:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  font-weight: 600;
+  color: #166534;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  color: #14532d;
+  font-weight: 500;
+  text-align: end;
+}
+
+[dir='rtl'] .infoValue {
+  text-align: start;
+}
+
+.statusActive {
+  color: #2d5a2d;
+  font-weight: 600;
+}
+
+.statusIdle {
+  color: #666;
+}
+
+.blockMessage {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  background: #fff5f5;
+  color: #b91c1c;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid #fecaca;
+}
+
+.activeTaskBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.executionActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.startBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.startBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.5);
+}
+
+.startBtn:active {
+  transform: translateY(0);
+}
+
+.endBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.endBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.45);
+}
+
+.endBtn:active {
+  transform: translateY(0);
+}
+
+.btnIcon {
+  width: 1rem;
+  height: 1rem;
+  margin-inline-end: 0.35rem;
+  vertical-align: -0.15em;
+  color: inherit;
+}
+
+.primaryButton {
+  min-height: 44px;
+  min-width: 120px;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: #5c7b5c;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  transition: background 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 768px) {
+  .primaryButton {
+    font-size: 1.05rem;
+  }
+}
+
+.primaryButton:hover {
+  background: #4a6b4a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.primaryButton:active {
+  background: #3d5a3d;
+}
+
+.secondaryButton {
+  min-height: 44px;
+  min-width: 120px;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #444;
+  background: #fff;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.secondaryButton:hover {
+  background: #f5f5f5;
+  border-color: #5c7b5c;
+}
+
+/* Confirmation */
+.confirmTitle {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #15803d;
+  text-align: center;
+}
+
+.summaryCard {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: #f0fdf4;
+  border-radius: 14px;
+  border: 1px solid #bbf7d0;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  font-size: 1rem;
+}
+
+.summaryRow span:last-child {
+  font-weight: 500;
+  color: #222;
+  text-align: end;
+}
+
+[dir='rtl'] .summaryRow span:last-child {
+  text-align: start;
+}
+
+.confirmActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}

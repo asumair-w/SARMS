@@ -1,0 +1,142 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { validateCredentials, validateUserIdFromQR, getRedirectForRole } from '../auth'
+import { useLanguage } from '../context/LanguageContext'
+import { getTranslation } from '../i18n/translations'
+import LoginStyles from './Login.module.css'
+import QRScanModal from '../components/QRScanModal'
+
+const ERROR_KEYS = {
+  'Invalid ID or password': 'errorInvalid',
+  'Invalid or expired QR Code': 'errorQR',
+  'Inactive or unauthorized user': 'errorInactive',
+  'Camera access denied': 'errorCamera',
+}
+
+export default function Login() {
+  const navigate = useNavigate()
+  const { lang, setLang } = useLanguage()
+  const t = (key) => getTranslation(lang, 'login', key)
+
+  const [userId, setUserId] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [showQRModal, setShowQRModal] = useState(false)
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    const result = validateCredentials(userId, password)
+    setLoading(false)
+    if (result.ok) {
+      sessionStorage.setItem('sarms-user-role', result.role)
+      sessionStorage.setItem('sarms-user-id', userId)
+      navigate(getRedirectForRole(result.role), { replace: true, state: { userId } })
+    } else {
+      const errKey = ERROR_KEYS[result.error] || 'errorInvalid'
+      setError(t(errKey))
+    }
+  }
+
+  function handleQRSuccess(resolvedUserId) {
+    setError('')
+    const result = validateUserIdFromQR(resolvedUserId)
+    if (result.ok) {
+      sessionStorage.setItem('sarms-user-role', result.role)
+      sessionStorage.setItem('sarms-user-id', resolvedUserId)
+      setShowQRModal(false)
+      navigate(getRedirectForRole(result.role), { replace: true, state: { userId: resolvedUserId } })
+    } else {
+      const errKey = ERROR_KEYS[result.error] || 'errorQR'
+      setError(t(errKey))
+    }
+  }
+
+  return (
+    <div className={LoginStyles.page}>
+      <div className={LoginStyles.card}>
+        <img
+          src="/logo.png"
+          alt="SARMS"
+          className={LoginStyles.logo}
+        />
+        <div className={LoginStyles.langSwitcher}>
+          <button
+            type="button"
+            className={lang === 'en' ? LoginStyles.langActive : LoginStyles.langBtn}
+            onClick={() => setLang('en')}
+            aria-pressed={lang === 'en'}
+          >
+            English
+          </button>
+          <button
+            type="button"
+            className={lang === 'ar' ? LoginStyles.langActive : LoginStyles.langBtn}
+            onClick={() => setLang('ar')}
+            aria-pressed={lang === 'ar'}
+          >
+            العربية
+          </button>
+        </div>
+
+        <h1 className={LoginStyles.title}>{t('title')}</h1>
+        <p className={LoginStyles.subtitle}>{t('subtitle')}</p>
+
+        <form onSubmit={handleSubmit} className={LoginStyles.form}>
+          <div className={LoginStyles.field}>
+            <label className={LoginStyles.label} htmlFor="userId">{t('id')}</label>
+            <input
+              id="userId"
+              type="text"
+              className={LoginStyles.input}
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+              autoComplete="username"
+              autoCapitalize="off"
+              disabled={loading}
+            />
+          </div>
+          <div className={LoginStyles.field}>
+            <label className={LoginStyles.label} htmlFor="password">{t('password')}</label>
+            <input
+              id="password"
+              type="password"
+              className={LoginStyles.input}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              disabled={loading}
+            />
+          </div>
+          {error && <p className={LoginStyles.error} role="alert">{error}</p>}
+          <button type="submit" className={LoginStyles.primaryButton} disabled={loading}>
+            {t('logIn')}
+          </button>
+        </form>
+
+        <div className={LoginStyles.separator}>
+          <span className={LoginStyles.separatorLine} />
+          <span className={LoginStyles.separatorText}>{t('or')}</span>
+          <span className={LoginStyles.separatorLine} />
+        </div>
+
+        <button
+          type="button"
+          className={LoginStyles.primaryButton}
+          onClick={() => { setError(''); setShowQRModal(true); }}
+        >
+          {t('scanQR')}
+        </button>
+      </div>
+
+      {showQRModal && (
+        <QRScanModal
+          onClose={() => setShowQRModal(false)}
+          onSuccess={handleQRSuccess}
+        />
+      )}
+    </div>
+  )
+}

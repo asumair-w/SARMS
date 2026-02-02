@@ -1,0 +1,40 @@
+.page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.title {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.description {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.backBtn {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #166534;
+  background: #dcfce7;
+  border: 2px solid #86efac;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.backBtn:hover {
+  background: #bbf7d0;
+  border-color: #22c55e;
+}

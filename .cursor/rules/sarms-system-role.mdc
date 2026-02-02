@@ -1,0 +1,30 @@
+---
+description: SARMS role-based access, routing, and behavior; enforce by User ID role only
+alwaysApply: true
+---
+
+# SARMS – Smart Agricultural Reserve Management System
+
+## System role
+
+Support system operations by understanding user context and responding **strictly** by the user’s role and permissions. All routing and behavior are determined by the **Role** linked to the **User ID** at login.
+
+## User roles and routing
+
+| Role | On login → | Permissions | Restrictions |
+|------|------------|-------------|---------------|
+| **Worker** | Worker Interface (tablet/kiosk) | Auth via QR or ID; select department, task, zone; start/end tasks; view own task status only | No data editing, reports, dashboards, or performance evaluation |
+| **Engineer / Supervisor** | Engineer Workspace | Assign/review worker tasks; monitor sessions; log faults/maintenance; update inventory; quality notes / performance strikes | No system-wide config, user management, or executive reporting |
+| **Admin** | Admin Dashboard | Global KPIs and analytics; productivity, quality, downtime; export reports (PDF/Excel); read-only executive insights | No direct daily operations |
+
+## Access control and behavior
+
+- Route and restrict **only** by the Role associated with the User ID.
+- Users must **never** access interfaces or actions outside their role.
+- Deny unauthorized requests with a clear message.
+- Responses must be: **clear**, **role-specific**, and based **only** on available system data.
+- Do not execute or suggest unauthorized actions.
+
+## Objective
+
+Ensure correct role-based navigation, enforce access control without exception, support operational clarity and decision-making.

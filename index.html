@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" href="/logo.png" type="image/png" />
+    <title>SARMS</title>
+  </head>
+  <body>
+    <div id="root" style="min-height:100vh;background:#f0f0f0;color:#333;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;">
+      <noscript>Enable JavaScript to use SARMS.</noscript>
+    </div>
+    <script>
+      window.__SARMS_ERROR__ = null;
+      window.addEventListener('error', function(e) {
+        window.__SARMS_ERROR__ = e;
+        var root = document.getElementById('root');
+        if (root && !root.querySelector('.sarms-error-box')) {
+          var msg = e.message || String(e.error);
+          var stack = e.error && e.error.stack ? e.error.stack : '';
+          root.innerHTML = '<div class="sarms-error-box" style="max-width:600px;padding:2rem;background:#1e293b;border-radius:12px;border:1px solid #475569;"><h1 style="margin:0 0 1rem;font-size:1.25rem;color:#fca5a5;">SARMS failed to load</h1><pre style="margin:0 0 1rem;padding:1rem;background:#0f172a;border-radius:8px;overflow:auto;font-size:0.8rem;color:#fca5a5;white-space:pre-wrap;word-break:break-all;">' + (msg + (stack ? '\n\n' + stack : '')).replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre><p style="margin:0 0 1rem;font-size:0.9rem;color:#94a3b8;">Open DevTools (F12) → Console for more details.</p><button onclick="location.reload()" style="padding:0.5rem 1rem;font-size:1rem;cursor:pointer;background:#22c55e;color:#fff;border:none;border-radius:8px;">Reload page</button></div>';
+        }
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        window.__SARMS_ERROR__ = e;
+        var root = document.getElementById('root');
+        if (root && !root.querySelector('.sarms-error-box')) {
+          var msg = (e.reason && (e.reason.message || String(e.reason))) || String(e.reason);
+          root.innerHTML = '<div class="sarms-error-box" style="max-width:600px;padding:2rem;background:#1e293b;border-radius:12px;border:1px solid #475569;"><h1 style="margin:0 0 1rem;font-size:1.25rem;color:#fca5a5;">SARMS failed to load (unhandled promise)</h1><pre style="margin:0 0 1rem;padding:1rem;background:#0f172a;border-radius:8px;overflow:auto;font-size:0.8rem;color:#fca5a5;white-space:pre-wrap;word-break:break-all;">' + (msg || 'Unknown error').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre><button onclick="location.reload()" style="padding:0.5rem 1rem;font-size:1rem;cursor:pointer;background:#22c55e;color:#fff;border:none;border-radius:8px;">Reload page</button></div>';
+        }
+      });
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
